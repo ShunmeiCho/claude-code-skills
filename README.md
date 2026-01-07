@@ -24,6 +24,12 @@
 
 ### One-Line Install
 
+**HTTPS (Recommended):**
+```bash
+git clone --recurse-submodules https://github.com/ShunmeiCho/claude-code-skills.git ~/.claude/skills && cd ~/.claude/skills && ./setup.sh
+```
+
+**SSH (requires SSH key):**
 ```bash
 git clone --recurse-submodules git@github.com:ShunmeiCho/claude-code-skills.git ~/.claude/skills && cd ~/.claude/skills && ./setup.sh
 ```
@@ -31,8 +37,9 @@ git clone --recurse-submodules git@github.com:ShunmeiCho/claude-code-skills.git 
 ### Step by Step
 
 ```bash
-# 1. Clone with submodules
-git clone --recurse-submodules git@github.com:ShunmeiCho/claude-code-skills.git ~/.claude/skills
+# 1. Clone with submodules (choose one)
+git clone --recurse-submodules https://github.com/ShunmeiCho/claude-code-skills.git ~/.claude/skills  # HTTPS
+git clone --recurse-submodules git@github.com:ShunmeiCho/claude-code-skills.git ~/.claude/skills      # SSH
 
 # 2. Run setup
 cd ~/.claude/skills
