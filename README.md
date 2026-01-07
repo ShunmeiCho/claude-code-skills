@@ -213,6 +213,25 @@ NotebookLM requires a display for browser automation. Options:
 
 </details>
 
+<details>
+<summary><b>Python dependencies installation failed</b></summary>
+
+If `setup.sh` shows "Failed to install some Python dependencies", install manually:
+
+```bash
+pip3 install lxml pymupdf pypdf reportlab pillow openpyxl
+```
+
+On macOS, you may need to use a virtual environment or `--user` flag:
+
+```bash
+pip3 install --user lxml pymupdf pypdf reportlab pillow openpyxl
+```
+
+These dependencies are required for `docx`, `pdf`, and `xlsx` skills.
+
+</details>
+
 ---
 
 ## 📜 License
