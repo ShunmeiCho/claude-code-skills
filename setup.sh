@@ -158,7 +158,7 @@ main() {
             if [ "$has_python" = true ]; then
                 log_info "Setting up Python skills..."
                 install_python_deps
-                setup_python_skill "$SCRIPT_DIR/notebooklm-skill"
+                setup_python_skill "$SCRIPT_DIR/skills/notebooklm-skill"
             else
                 log_error "Python not found, skipping Python skills"
             fi
@@ -166,8 +166,8 @@ main() {
         --node)
             if [ "$has_node" = true ]; then
                 log_info "Setting up Node.js skills..."
-                setup_node_skill "$SCRIPT_DIR/playwright-skill"
-                setup_node_skill "$SCRIPT_DIR/n8n-skills"
+                setup_node_skill "$SCRIPT_DIR/skills/playwright-skill"
+                setup_node_skill "$SCRIPT_DIR/skills/n8n-skills"
             else
                 log_error "Node.js not found, skipping Node skills"
             fi
@@ -176,14 +176,14 @@ main() {
             if [ "$has_python" = true ]; then
                 log_info "Setting up Python skills..."
                 install_python_deps
-                setup_python_skill "$SCRIPT_DIR/notebooklm-skill"
+                setup_python_skill "$SCRIPT_DIR/skills/notebooklm-skill"
                 echo ""
             fi
 
             if [ "$has_node" = true ]; then
                 log_info "Setting up Node.js skills..."
-                setup_node_skill "$SCRIPT_DIR/playwright-skill"
-                setup_node_skill "$SCRIPT_DIR/n8n-skills"
+                setup_node_skill "$SCRIPT_DIR/skills/playwright-skill"
+                setup_node_skill "$SCRIPT_DIR/skills/n8n-skills"
                 echo ""
             fi
             ;;
