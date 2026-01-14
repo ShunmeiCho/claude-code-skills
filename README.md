@@ -27,8 +27,13 @@ dotclaude/
 ├── setup.sh             # Install skill dependencies
 ├── setup-mcp.sh         # Configure MCP servers via CLI
 ├── .env.example         # API key template
-├── CLAUDE.md            # User instructions (thinking protocol, RIPER-5)
-├── settings.json        # Claude Code settings (plugins, etc.)
+├── CLAUDE.md            # User instructions
+├── .mcp.json            # MCP server configuration
+├── .claude/             # Claude Code configuration
+│   ├── settings.json    # Official settings format
+│   ├── commands/        # Custom slash commands
+│   ├── rules/           # Modular rules
+│   └── hooks/           # Hook scripts
 ├── skills/              # 41 Skills
 │   ├── ccxt/            # Cryptocurrency trading
 │   ├── claude-code-guide/
@@ -66,6 +71,21 @@ Copies files to `~/.claude/`. Standalone installation.
 ```
 Only install skills, keep existing CLAUDE.md and configs.
 
+## Installed Directory Structure
+
+After installation, `~/.claude/` will contain:
+
+```
+~/.claude/
+├── CLAUDE.md            # Project instructions
+├── settings.json        # Claude Code settings
+├── commands/            # Custom slash commands
+├── rules/               # Modular rules
+├── hooks/               # Hook scripts
+├── skills/              # Skill modules
+└── resources/           # Reference materials
+```
+
 ## Skills (41)
 
 ### Development Workflow
@@ -90,7 +110,7 @@ Only install skills, keep existing CLAUDE.md and configs.
 - `polymarket` - Prediction markets
 
 ### Claude Ecosystem
-- `claude-code-guide` - Claude Code 高级开发指南
+- `claude-code-guide` - Claude Code development guide
 - `claude-cookbooks` - API examples
 - `claude-skills` - Skill creation guide
 
@@ -102,21 +122,37 @@ Only install skills, keep existing CLAUDE.md and configs.
 ## Configuration Files
 
 ### CLAUDE.md
-Contains:
-- Deep thinking protocol with `ultrathink` trigger
-- RIPER-5 programming mode system (Research/Innovate/Plan/Execute/Review)
+
+Concise project guidelines following [official best practices](https://www.anthropic.com/engineering/claude-code-best-practices):
+- Core principles
 - Code quality standards
-- Output format specifications
+- Working style guidelines
 
 ### settings.json
+
+Uses the [official JSON schema](https://json.schemastore.org/claude-code-settings.json):
+
 ```json
 {
-  "enabledPlugins": {
-    "claude-mem@thedotmack": true,
-    "document-skills@anthropic-agent-skills": true,
-    "superpowers@superpowers-marketplace": true
-  },
-  "alwaysThinkingEnabled": true
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": ["Bash(git status:*)", "Read(*)"],
+    "deny": ["Read(.env)", "Read(**/*credentials*)"]
+  }
+}
+```
+
+### .mcp.json
+
+Project-level MCP server configuration:
+
+```json
+{
+  "mcpServers": {
+    "notion": {
+      "url": "https://mcp.notion.com/mcp"
+    }
+  }
 }
 ```
 
@@ -167,7 +203,15 @@ The `resources/` directory contains reference materials:
 
 - `documents/` - Methodology guides, tutorials
 - `prompts/` - System prompt examples, coding prompts
-  - `system_prompts/CLAUDE.md/` - 10 CLAUDE.md variants
+
+## Official References
+
+- [Claude Code Settings Documentation](https://code.claude.com/docs/en/settings)
+- [Managing Memory (CLAUDE.md)](https://code.claude.com/docs/en/memory)
+- [MCP Server Configuration](https://code.claude.com/docs/en/mcp)
+- [Slash Commands](https://code.claude.com/docs/en/slash-commands)
+- [Hooks Reference](https://code.claude.com/docs/en/hooks)
+- [Best Practices](https://www.anthropic.com/engineering/claude-code-best-practices)
 
 ## License
 

@@ -106,15 +106,50 @@ install_config() {
     local mode=$1
     log_info "Installing config files..."
 
-    # settings.json
-    if [ -f "$SCRIPT_DIR/settings.json" ]; then
+    # Create .claude subdirectories
+    mkdir -p "$CLAUDE_DIR/commands" "$CLAUDE_DIR/rules" "$CLAUDE_DIR/hooks"
+
+    # settings.json (now in .claude/ directory)
+    if [ -f "$SCRIPT_DIR/.claude/settings.json" ]; then
         if [ "$mode" = "link" ]; then
             [ -f "$CLAUDE_DIR/settings.json" ] && mv "$CLAUDE_DIR/settings.json" "$CLAUDE_DIR/settings.json.bak"
-            ln -sf "$SCRIPT_DIR/settings.json" "$CLAUDE_DIR/settings.json"
+            ln -sf "$SCRIPT_DIR/.claude/settings.json" "$CLAUDE_DIR/settings.json"
         else
-            cp "$SCRIPT_DIR/settings.json" "$CLAUDE_DIR/"
+            cp "$SCRIPT_DIR/.claude/settings.json" "$CLAUDE_DIR/"
         fi
         echo "  ✓ settings.json"
+    fi
+
+    # Install commands if they exist
+    if [ -d "$SCRIPT_DIR/.claude/commands" ] && [ "$(ls -A "$SCRIPT_DIR/.claude/commands" 2>/dev/null)" ]; then
+        if [ "$mode" = "link" ]; then
+            for cmd in "$SCRIPT_DIR/.claude/commands"/*; do
+                if [ -f "$cmd" ]; then
+                    cmd_name=$(basename "$cmd")
+                    ln -sf "$cmd" "$CLAUDE_DIR/commands/$cmd_name"
+                    echo "  ✓ commands/$cmd_name"
+                fi
+            done
+        else
+            cp -r "$SCRIPT_DIR/.claude/commands"/* "$CLAUDE_DIR/commands/" 2>/dev/null || true
+            echo "  ✓ commands/"
+        fi
+    fi
+
+    # Install rules if they exist
+    if [ -d "$SCRIPT_DIR/.claude/rules" ] && [ "$(ls -A "$SCRIPT_DIR/.claude/rules" 2>/dev/null)" ]; then
+        if [ "$mode" = "link" ]; then
+            for rule in "$SCRIPT_DIR/.claude/rules"/*; do
+                if [ -f "$rule" ]; then
+                    rule_name=$(basename "$rule")
+                    ln -sf "$rule" "$CLAUDE_DIR/rules/$rule_name"
+                    echo "  ✓ rules/$rule_name"
+                fi
+            done
+        else
+            cp -r "$SCRIPT_DIR/.claude/rules"/* "$CLAUDE_DIR/rules/" 2>/dev/null || true
+            echo "  ✓ rules/"
+        fi
     fi
 
     log_success "Config files installed"
@@ -265,6 +300,16 @@ main() {
     [ "$skills_only" = false ] && echo "  - Resources: ~/.claude/resources/"
     [ "$skills_only" = false ] && echo "  - Config: settings.json"
     [ "$skills_only" = false ] && echo "  - CLAUDE.md"
+    echo ""
+    echo "Directory structure:"
+    echo "  ~/.claude/"
+    echo "  ├── CLAUDE.md"
+    echo "  ├── settings.json"
+    echo "  ├── commands/"
+    echo "  ├── rules/"
+    echo "  ├── hooks/"
+    echo "  ├── skills/"
+    echo "  └── resources/"
     echo ""
     echo "Next steps:"
     echo "  ./setup-mcp.sh   - Configure MCP servers (Notion, GitHub, etc.)"
