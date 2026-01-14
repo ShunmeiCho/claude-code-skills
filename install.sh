@@ -42,7 +42,12 @@ show_help() {
 backup_existing() {
     if [ -d "$CLAUDE_DIR" ]; then
         log_info "Backing up existing ~/.claude to $BACKUP_DIR"
-        cp -r "$CLAUDE_DIR" "$BACKUP_DIR"
+        # Use rsync or cp with error suppression for missing files
+        if command -v rsync &> /dev/null; then
+            rsync -a "$CLAUDE_DIR/" "$BACKUP_DIR/" 2>/dev/null || true
+        else
+            cp -r "$CLAUDE_DIR" "$BACKUP_DIR" 2>/dev/null || true
+        fi
         log_success "Backup created"
     fi
 }
